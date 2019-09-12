@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Demo.aspx.cs" Inherits="EmailDemo.Demo" %>
+﻿<%@ Page Title="Download demo" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Demo.aspx.cs" Inherits="EmailDemo.Demo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -18,10 +18,10 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm">
+                <div class="col-2">
                     <a href="/api/MailMessage/TextFileTest">Download text file</a>
                 </div>
-                <div class="col-sm">
+                <div class="col">
                     <a href="/api/MailMessage/TextFileTest" class="btn btn-primary">Download text file</a>
                 </div>
             </div>
@@ -29,6 +29,21 @@
 
         </fieldset>
 
+        <fieldset>
+            <legend>Email message</legend>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-3">
+                    <a href="/api/MailMessage/MailMessageTest">Download email message</a>
+                </div>
+                <div class="col">
+                    <a href="/api/MailMessage/MailMessageTest" class="btn btn-primary">Download email message</a>
+                </div>
+            </div>
+        </div>
+
+        </fieldset>
 
     </div>
 

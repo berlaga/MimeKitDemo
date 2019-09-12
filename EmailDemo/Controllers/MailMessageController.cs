@@ -6,12 +6,14 @@ using System.Text;
 using System.Web.Http;
 using System.Web.Http.Results;
 
+using MailWrapper;
+using MimeKit;
+
 namespace EmailDemo.Controllers
 {
     [RoutePrefix("api/MailMessage")]
     public class MailMessageController : ApiController
     {
-        // GET: api/MailMessage/5
         [HttpGet]
         [Route("TextFileTest")]
         public IHttpActionResult TextFileText()
@@ -37,5 +39,36 @@ namespace EmailDemo.Controllers
             //return Ok("");
         }
 
-   }
+
+        [HttpGet]
+        [Route("MailMessageTest")]
+        public IHttpActionResult MailMessageTest()
+        {
+
+            MailMessageManager manager = new MailMessageManager();
+
+            var message = manager.GetMailMessage();
+
+            MemoryStream streamFinal = new MemoryStream();
+            message.WriteTo(streamFinal);
+            //must set position back to 0
+            streamFinal.Position = 0;
+
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(streamFinal)
+
+            };
+            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "WebApi2GeneratedFile.eml",
+            };
+            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("message/rfc822");
+
+            ResponseMessageResult responseMessageResult = ResponseMessage(httpResponseMessage);
+            return responseMessageResult;
+        }
+
+
+    }
 }
