@@ -45,9 +45,39 @@ namespace EmailDemo.Controllers
         public IHttpActionResult MailMessageTest()
         {
 
-            MailMessageManager manager = new MailMessageManager();
+            MailMessageManager manager = new MailMessageManager(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"));
 
             var message = manager.GetMailMessage();
+
+            MemoryStream streamFinal = new MemoryStream();
+            message.WriteTo(streamFinal);
+            //must set position back to 0
+            streamFinal.Position = 0;
+
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(streamFinal)
+
+            };
+            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "WebApi2GeneratedFile.eml",
+            };
+            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("message/rfc822");
+
+            ResponseMessageResult responseMessageResult = ResponseMessage(httpResponseMessage);
+            return responseMessageResult;
+        }
+
+
+        [HttpGet]
+        [Route("MailMessageTestAttachment")]
+        public IHttpActionResult MailMessageTestAttachment()
+        {
+
+            MailMessageManager manager = new MailMessageManager(System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data"));
+
+            var message = manager.GetMailMessageWithAttachments();
 
             MemoryStream streamFinal = new MemoryStream();
             message.WriteTo(streamFinal);

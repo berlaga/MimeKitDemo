@@ -11,40 +11,59 @@ namespace MailWrapper
 {
     public class MailMessageManager
     {
+        private string _basePath;
+
+
+
+        public MailMessageManager(string basePath) {
+
+            this._basePath = basePath;
+        }
 
         public MimeMessage GetMailMessage()
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Joey", "joey@friends.com"));
-            message.To.Add(new MailboxAddress("Alice", "alice@wonderland.com"));
-            message.Subject = "How you doin?";
-
-            //message.Body = new TextPart("plain")
-            //{
-            //    Text = @"Hey Alice,
-
-            //            What are you up to this weekend? Monica is throwing one of her parties on
-            //            Saturday and I was hoping you could make it.
-
-            //            Will you be my +1?
-
-            //            -- Joey
-            //            "
-            //};
+            message.From.Add(new MailboxAddress("John Doe", "john.doe@something.com"));
+            message.To.Add(new MailboxAddress("Jane Doe", "jane.doe@something.com"));
+            message.Subject = "This is a test subject..";
 
             message.Body = new TextPart("html")
             {
                  Text = "<div>test</div>"
             };
 
+            message.Headers.Add("X-Unsent", "1");
+
             return message;
 
+        }
 
-            //MemoryStream stream = new MemoryStream();
+        public MimeMessage GetMailMessageWithAttachments()
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("John Doe", "john.doe@something.com"));
+            message.To.Add(new MailboxAddress("Jane Doe", "jane.doe@something.com"));
+            message.Subject = "This is a test subject..";
 
-            //message.WriteTo(stream);
+            var builder = new BodyBuilder();
+
+            builder.HtmlBody = "<div>This is a test HTML content</div>";
+            builder.TextBody = "This is a test PLAIN content";
+
+            // attach PDF
+            builder.Attachments.Add(_basePath + @"\test_doc_1.pdf");
+
+            // Now we just need to set the message body and we're done
+            message.Body = builder.ToMessageBody();
+
+            //must have or Send button will not show up
+            message.Headers.Add("X-Unsent", "1");
+
+            return message;
 
         }
+
+
 
         public bool VerifyMailMessage (Stream s)
         {

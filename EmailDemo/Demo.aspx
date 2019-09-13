@@ -34,8 +34,8 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-3">
-                    <a href="/api/MailMessage/MailMessageTest">Download email message</a>
+                <div class="col-4">
+                    <a href="/api/MailMessage/MailMessageTestAttachment">Download email message with attachment</a>
                 </div>
                 <div class="col">
                     <a href="/api/MailMessage/MailMessageTest" class="btn btn-primary">Download email message</a>
